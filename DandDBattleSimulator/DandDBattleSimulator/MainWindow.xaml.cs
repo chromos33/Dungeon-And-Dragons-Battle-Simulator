@@ -24,13 +24,16 @@ namespace DandDBattleSimulator
     public partial class MainWindow : Window
     {
         List<Weapon> Weapons;
+        List<Armor> Armors;
         public MainWindow()
         {
             InitializeComponent();
             Weapons = new List<Weapon>();
+            Armors = new List<Armor>();
             LoadWeapons();
-            Weapon_WeaponsList.ItemsSource = Weapons;
-            Character_Weapon_ComboBox.ItemsSource = Weapons;
+            LoadArmors();
+            InitComboBoxesSourceItems();
+            
 
             /*
             Random randomizer = new Random();
@@ -50,7 +53,48 @@ namespace DandDBattleSimulator
             List<Classes.Point> resultmove = ally.MoveTo(enemy.getPoint());
             */
         }
-
+        #region dataload
+        private void InitComboBoxesSourceItems()
+        {
+            Weapon_WeaponsList.ItemsSource = Weapons;
+            Character_Weapon_ComboBox.ItemsSource = Weapons;
+            Armor_ArmorsList.ItemsSource = Armors;
+            Character_Armor_ComboBox.ItemsSource = Armors;
+        }
+        private void LoadWeapons()
+        {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/weapon"))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/weapon");
+            }
+            else
+            {
+                foreach (string file in Directory.EnumerateFiles(Directory.GetCurrentDirectory() + "/weapon", "*.weapon"))
+                {
+                    string weaponjsonstring = File.ReadAllText(file);
+                    Weapon insertweapon = JsonConvert.DeserializeObject<Weapon>(weaponjsonstring);
+                    Weapons.Add(insertweapon);
+                }
+            }
+        }
+        private void LoadArmors()
+        {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/armor"))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/armor");
+            }
+            else
+            {
+                foreach (string file in Directory.EnumerateFiles(Directory.GetCurrentDirectory() + "/armor", "*.armor"))
+                {
+                    string jsonstring = File.ReadAllText(file);
+                    Armor insertArmor = JsonConvert.DeserializeObject<Armor>(jsonstring);
+                    Armors.Add(insertArmor);
+                }
+            }
+        }
+        #endregion
+        #region Weapon
         private void Weapon_WeaponsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(Weapon_WeaponsList.SelectedIndex != -1)
@@ -146,22 +190,83 @@ namespace DandDBattleSimulator
             string jsonwrite = JsonConvert.SerializeObject(writeWeapon);
             WriteJsonStringToFile(jsonwrite, "weapon", name);
         }
-        private void LoadWeapons()
+
+        #endregion
+        #region Armor
+        private void Armor_Save_Click(object sender, RoutedEventArgs e)
         {
-            if(!Directory.Exists(Directory.GetCurrentDirectory()+"/weapon"))
+            string sName = Armor_Name.Text;
+            if (sName == "")
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/weapon");
+                MessageBox.Show("You must enter a name for the weapon");
+                return;
+            }
+            int iAC = 0;
+            if (!Int32.TryParse(Armor_AC.Text, out iAC))
+            {
+                MessageBox.Show("You must enter a number for Armor Class");
+                return;
+            }
+            int iMR = 0;
+            if (!Int32.TryParse(Armor_MovementRestriction.Text, out iMR))
+            {
+                MessageBox.Show("You must enter a number for MovementRestriction");
+                return;
+            }
+            IEnumerable<Armor> ArmorQuery = Armors.Where(x => x.sName == sName);
+            Armor writeArmor = null;
+            if (ArmorQuery.Count() > 0)
+            {
+                writeArmor = ArmorQuery.First();
+                writeArmor.iAC = iAC;
+                writeArmor.sName = sName;
+                writeArmor.iMovementRestriction = iMR;
+
             }
             else
             {
-                foreach(string file in Directory.EnumerateFiles(Directory.GetCurrentDirectory() + "/weapon","*.weapon"))
+                writeArmor = new Armor(iAC,iMR,sName);
+            }
+            if (Armor_ArmorsList.SelectedIndex != -1)
+            {
+                MessageBoxResult result = MessageBox.Show("You have selected an item do you want to override(yes),create new (no),or cancel", "Attention", MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Yes)
                 {
-                    string weaponjsonstring = File.ReadAllText(file);
-                    Weapon insertweapon = JsonConvert.DeserializeObject<Weapon>(weaponjsonstring);
-                    Weapons.Add(insertweapon);
+
                 }
+                if (result == MessageBoxResult.No)
+                {
+                    Armor_ArmorsList.SelectedIndex = -1;
+                }
+                if (result == MessageBoxResult.Cancel)
+                {
+                    return;
+                }
+
+
+            }
+            if (ArmorQuery.Count() == 0)
+            {
+                Armors.Add(writeArmor);
+            }
+            string jsonwrite = JsonConvert.SerializeObject(writeArmor);
+            WriteJsonStringToFile(jsonwrite, "armor", sName);
+        }
+
+        private void Armor_ArmorsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Armor_ArmorsList.SelectedIndex != -1)
+            {
+                Armor SelectedItem = (Armor)Armor_ArmorsList.SelectedItem;
+                Armor_Name.Text = SelectedItem.sName;
+                Armor_AC.Text = SelectedItem.iAC.ToString();
+                Armor_MovementRestriction.Text = SelectedItem.iMovementRestriction.ToString();
+            }
+            else
+            {
             }
         }
+        #endregion
         private void WriteJsonStringToFile(string json,string type,string name)
         {
             type = type.ToLower();
@@ -175,14 +280,5 @@ namespace DandDBattleSimulator
             }
         }
 
-        private void ClearSelection_Click(object sender, RoutedEventArgs e)
-        {
-            Weapon_WeaponsList.SelectedIndex = -1;
-        }
-
-        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }
