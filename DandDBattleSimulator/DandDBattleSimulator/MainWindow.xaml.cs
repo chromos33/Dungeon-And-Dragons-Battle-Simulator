@@ -30,7 +30,8 @@ namespace DandDBattleSimulator
             Weapons = new List<Weapon>();
             LoadWeapons();
             Weapon_WeaponsList.ItemsSource = Weapons;
-            
+            Character_Weapon_ComboBox.ItemsSource = Weapons;
+
             /*
             Random randomizer = new Random();
             BattleField Battlefield = new BattleField(randomizer, 4);
@@ -177,6 +178,11 @@ namespace DandDBattleSimulator
         private void ClearSelection_Click(object sender, RoutedEventArgs e)
         {
             Weapon_WeaponsList.SelectedIndex = -1;
+        }
+
+        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

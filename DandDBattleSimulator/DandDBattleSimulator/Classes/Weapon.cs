@@ -14,6 +14,7 @@ namespace DandDBattleSimulator.Classes
         public bool range;
         public int attackrange;
         public int bonusdamage;
+        public bool is_primary = false;
 
         public Weapon(string _name,int _dice,int _bonusdamage = 0, bool _twohanded = false,bool _range = false,int _attackrange = 0)
         {
