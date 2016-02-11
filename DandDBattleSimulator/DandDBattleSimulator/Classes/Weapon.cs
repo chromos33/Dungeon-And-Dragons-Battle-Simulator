@@ -13,14 +13,20 @@ namespace DandDBattleSimulator.Classes
         public bool twohanded;
         public bool range;
         public int attackrange;
+        public int bonusdamage;
 
-        public Weapon(string _name,int _dice,bool _twohanded = false,bool _range = false,int _attackrange = 0)
+        public Weapon(string _name,int _dice,int _bonusdamage = 0, bool _twohanded = false,bool _range = false,int _attackrange = 0)
         {
             name = _name;
             Dice = _dice;
             twohanded = _twohanded;
             range = _range;
             attackrange = _attackrange;
+            bonusdamage = _bonusdamage;
+        }
+        public override string ToString()
+        {
+            return name;
         }
     }
 }
