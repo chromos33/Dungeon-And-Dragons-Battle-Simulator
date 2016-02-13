@@ -10,16 +10,50 @@
         <TabControl x:Name="tabControl" Margin="1,0,-1,0">
             <TabItem Header="Simulate"/>
             <TabItem Header="Battlefield">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid x:Name="Battlefield_Tab_Grid" Background="#FFE5E5E5">
+                    <Grid Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="116*"/>
+                            <ColumnDefinition Width="116*"/>
+                            <ColumnDefinition Width="111*"/>
+                            <ColumnDefinition Width="411*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="43*"/>
+                            <RowDefinition Height="39*"/>
+                            <RowDefinition Height="394*"/>
+                        </Grid.RowDefinitions>
+                        <Label x:Name="Battlefield_Label_Height" Margin="10" Grid.Row="0" Content="Width" Cursor=""/>
+                        <TextBox x:Name="Battlefield_Height" Margin="10" TextWrapping="Wrap" Text="" Grid.Row="1"/>
+                        <Label x:Name="Battlefield_Label_Width" Margin="10,10,10,5" Grid.Row="0" Grid.Column="1" Content="Height" Cursor=""/>
+                        <TextBox x:Name="Battlefield_Width" Margin="10" TextWrapping="Wrap" Grid.Column="1" Text="" Grid.Row="1"/>
+                        <Button x:Name="Battlefield_RawMapGenerate" Content="Generate rawmap" Grid.Column="2" Margin="0,10" Grid.Row="1" Width="75" Click="Battlefield_RawMapGenerate_Click"/>
+                        <Grid x:Name="Battlefield_Container" Grid.ColumnSpan="4" Margin="0" Grid.Row="2">
+
+                        </Grid>
+                        <ComboBox x:Name="Battlefield_Configs" Grid.Column="3" HorizontalAlignment="Left" Margin="11,10,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="Battlefield_Configs_SelectionChanged" IsEditable="True"/>
+                        <Grid Grid.Column="3" Margin="0" Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="Battlefield_Save" Content="Save Battlefield" Grid.Column="2" Margin="10,10,10,0" Click="Battlefield_Save_Click" Grid.Row="0"/>
+                            <TextBox x:Name="BattleField_Name" Grid.Column="1" Margin="10,10,10,0" Grid.Row="0" TextWrapping="Wrap" Text="" TextAlignment="Center"/>
+                            <Label x:Name="BattleField_Name_Label" Content="Name" Grid.Column="0" Margin="10,10,0,0" Grid.Row="0"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem  Header="Character" Height="20" VerticalAlignment="Stretch" Margin="0" HorizontalAlignment="Stretch">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFE5E5E5" Margin="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition MinWidth="200"/>
-                        <ColumnDefinition MinWidth="200"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition MinWidth="200" Width="147*"/>
+                        <ColumnDefinition Width="53*"/>
+                        <ColumnDefinition MinWidth="200" Width="200*"/>
+                        <ColumnDefinition Width="355*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Margin="0">
+                    <Grid Margin="0" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" MinHeight="25"/>
                             <RowDefinition Height="1*" MinHeight="25"/>
@@ -79,7 +113,7 @@
                             </TextBox.RenderTransform>
                         </TextBox>
                         <Label x:Name="Character_Label_Con" Content="Constitution" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center" Height="24"/>
-                        <TextBox x:Name="Character_Con" Grid.Column="1" Grid.Row="4" Margin="0,0.5" TextWrapping="Wrap" Text="" MaxWidth="100" TextAlignment="Center" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" Height="24">
+                        <TextBox x:Name="Character_Con" Grid.Column="1" Grid.Row="4" Margin="0,18" TextWrapping="Wrap" Text="" MaxWidth="100" TextAlignment="Center" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" Height="24">
                             <TextBox.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -123,7 +157,7 @@
                             </TextBox.RenderTransform>
                         </TextBox>
                     </Grid>
-                    <Grid Grid.Column="1" Margin="0">
+                    <Grid Grid.Column="2" Margin="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" MinHeight="25"/>
                             <RowDefinition Height="1*" MinHeight="25"/>
@@ -142,17 +176,18 @@
                         <Label x:Name="Character_Label_WillSave" Content="Will Save" Margin="0,14,0,13" VerticalAlignment="Center"/>
                         <TextBox x:Name="Character_WillSave" Grid.Column="1" Margin="0,14" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Height="25"/>
                         <Label x:Name="Character_Label_FortSave" Content="Fortitude Save" Margin="0,13,0,14" Grid.Row="1" VerticalAlignment="Center"/>
-                        <TextBox x:Name="Character_FortSave" Grid.Column="1" Margin="0,14" TextWrapping="Wrap" Text="" Grid.Row="1" VerticalAlignment="Center" Height="25"/>
+                        <TextBox x:Name="Character_FortSave" Grid.Column="1" Margin="0,14" TextWrapping="Wrap" Text="0" Grid.Row="1" VerticalAlignment="Center" Height="25"/>
                         <Label x:Name="Character_Label_ReflexSave" Content="Reflex Save" Margin="0,14,0,13" Grid.Row="2" VerticalAlignment="Center"/>
                         <TextBox x:Name="Character_ReflexSave" Grid.Column="1" Margin="0,14" TextWrapping="Wrap" Text="" Grid.Row="2" VerticalAlignment="Center" Height="25"/>
                         <Label x:Name="Character_Label_DeathSave" Content="Death Save" Margin="0,13" Grid.Row="3" VerticalAlignment="Center"/>
                         <TextBox x:Name="Character_DeathSave" Grid.Column="1" Margin="0,13" TextWrapping="Wrap" Text="" Grid.Row="3" VerticalAlignment="Center" Height="26"/>
                         <Label x:Name="Character_Label_MovementRate" Content="Movement Range" Margin="0,13" Grid.Row="4" VerticalAlignment="Center"/>
                         <TextBox x:Name="Character_MoveMentrate" Grid.Column="1" Margin="0,13" TextWrapping="Wrap" Text="" Grid.Row="4" VerticalAlignment="Center" Height="26"/>
-                        <CheckBox x:Name="Character_IsPC" Content="Player Charcter?" Margin="0,10" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+                        <Button x:Name="button" Content="Save Character" Margin="10" Grid.Row="5" Grid.ColumnSpan="2" Click="Character_Save"/>
+                        <ComboBox x:Name="Character_CharacterList" Grid.ColumnSpan="2" Margin="10" Grid.Row="8" SelectionChanged="Character_CharacterList_SelectionChanged" IsEditable="True"/>
 
                     </Grid>
-                    <TabControl x:Name="Character_Weapon_Tab" Grid.Column="2" Margin="0" Width="auto">
+                    <TabControl x:Name="Character_Weapon_Tab" Grid.Column="3" Margin="0" Width="auto">
                         <TabItem Header="Weapon">
                             <Grid Background="#FFE5E5E5">
                                 <Grid.RowDefinitions>
@@ -161,22 +196,21 @@
                                     <RowDefinition Height="1*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="81*"/>
+                                    <ColumnDefinition Width="268*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label x:Name="Charcter_Weapon_Label" Content="Weapon" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.211,-0.269"/>
-                                <ComboBox x:Name="Character_Weapon_ComboBox" Margin="10,41,10,0" VerticalAlignment="Top"/>
-                                <ListBox x:Name="Character_Weapons" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1"/>
+                                <ComboBox x:Name="Character_Weapon_ComboBox" Margin="10,41,10,0" VerticalAlignment="Top" Grid.ColumnSpan="2" IsEditable="True"/>
+                                <ListBox x:Name="Character_Weapons" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="2"/>
 
 
-                                <Button x:Name="Character_Weapons_AddBtn" Content="Add Weapon" Margin="16,80,16,0" VerticalAlignment="Top" RenderTransformOrigin="-0.093,-2.2" Width="154" HorizontalAlignment="Center"/>
-                                <CheckBox x:Name="Character_Weapons_IsPrimary" Content="IsPrimary" Margin="140,109,140,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-                                <Grid Margin="0" Grid.Row="2">
+                                <Button x:Name="Character_Weapons_AddBtn" Content="Add Weapon" Margin="17,80,97,0" VerticalAlignment="Top" RenderTransformOrigin="-0.093,-2.2" Width="154" HorizontalAlignment="Center" Click="Character_Weapons_AddBtn_Click" Grid.Column="1"/>
+                                <CheckBox x:Name="Character_Weapons_IsPrimary" Content="IsPrimary" Margin="59,109,140,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Column="1"/>
+                                <Grid Margin="0" Grid.Row="2" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button x:Name="Character_Weapons_RemoveBtn" Grid.Column="0" Content="Remove" Margin="10,10,10,0"/>
-                                    <Button x:Name="Character_Weapons_UpdateBtn" Grid.Column="1" Content="Update" Margin="10,10,10,0"/>
+                                    <Button x:Name="Character_Weapons_RemoveBtn" Grid.Column="0" Content="Remove" Margin="10,10,10,0" Click="Character_Weapons_RemoveBtn_Click"/>
                                 </Grid>
                             </Grid>
                         </TabItem>
@@ -195,14 +229,12 @@
                                 <ListBox x:Name="Character_Armors" Margin="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1"/>
 
 
-                                <Button x:Name="Character_Armors_AddBtn" Content="Add Armor" Margin="16,80,16,0" VerticalAlignment="Top" RenderTransformOrigin="-0.093,-2.2" Width="154" HorizontalAlignment="Center"/>
+                                <Button x:Name="Character_Armors_AddBtn" Content="Add Armor" Margin="16,80,16,0" VerticalAlignment="Top" RenderTransformOrigin="-0.093,-2.2" Width="154" HorizontalAlignment="Center" Click="Character_Armors_AddBtn_Click"/>
                                 <Grid Margin="0" Grid.Row="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button x:Name="Character_Armors_RemoveBtn" Grid.Column="0" Content="Remove" Margin="10,10,10,0"/>
-                                    <Button x:Name="Character_Armors_UpdateBtn" Grid.Column="1" Content="Update" Margin="10,10,10,0"/>
+                                    <Button x:Name="Character_Armors_RemoveBtn" Grid.Column="0" Content="Remove" Margin="10,10,10,0" Click="Character_Armors_RemoveBtn_Click"/>
                                 </Grid>
                             </Grid>
                         </TabItem>
@@ -317,7 +349,7 @@
                     <Label x:Name="Armor_Label_MovementRestriction" Content="Armor restricts Movement" Margin="10,10,9,10" Grid.Row="2"/>
                     <TextBox x:Name="Armor_MovementRestriction" Grid.Column="1" Grid.Row="2" Margin="10" Grid.RowSpan="1" TextWrapping="Wrap" Text="0" Grid.ColumnSpan="1" TextAlignment="Center"/>
                     <ComboBox x:Name="Armor_ArmorsList" Margin="10,10,9,10" Grid.Row="4" SelectionChanged="Armor_ArmorsList_SelectionChanged" IsEditable="True"/>
-                    <Button x:Name="Armor_Save" Content="Save Weapon" Grid.Column="2" Margin="10" Grid.Row="4" Click="Armor_Save_Click"/>
+                    <Button x:Name="Armor_Save" Content="Save Armor" Grid.Column="2" Margin="10" Grid.Row="4" Click="Armor_Save_Click"/>
                 </Grid>
             </TabItem>
 

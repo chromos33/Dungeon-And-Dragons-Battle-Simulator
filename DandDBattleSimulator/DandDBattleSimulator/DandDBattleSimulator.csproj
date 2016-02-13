@@ -74,6 +74,7 @@
     <Compile Include="Classes\Character.cs" />
     <Compile Include="Classes\CombatFeat.cs" />
     <Compile Include="Classes\Point.cs" />
+    <Compile Include="Classes\StaticJSONCloneHelper.cs" />
     <Compile Include="Classes\Weapon.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

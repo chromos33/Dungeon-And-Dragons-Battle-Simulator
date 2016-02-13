@@ -11,106 +11,31 @@ namespace DandDBattleSimulator.Classes
         List<Character> Characters;
         List<Point> MapConfig;
         Random randomenerator;
-        public BattleField(Random randomizer, int configurement = 0)
+        string sname;
+        public BattleField(Random randomizer,List<Point> _battlefieldconfig, int configurement = 0)
         {
             // 0 = simple room 10x10, 1 = 2 wide Pathway,2 = 1 wide Pathway,3 = crossintersection
             randomenerator = randomizer;
             Characters = new List<Character>();
-            MapConfig = new List<Point>();
-            switch (configurement)
-            {
-                default:
-                    for (int x = 0; x < 10; x++)
-                    {
-                        for (int y = 0; y < 10; y++)
-                        {
-                            if (!CheckIfAlreadyExistant(new Point(x, y)))
-                            {
-                                MapConfig.Add(new Point(x, y));
-                            }
-                        }
-                    }
-                    break;
-                case 1:
-                    for (int x = 0; x < 2; x++)
-                    {
-                        for (int y = 0; y < 20; y++)
-                        {
-                            if (!CheckIfAlreadyExistant(new Point(x, y)))
-                            {
-                                MapConfig.Add(new Point(x, y));
-                            }
-                        }
-                    }
-                    break;
-                case 2:
-                    for (int x = 0; x < 1; x++)
-                    {
-                        for (int y = 0; y < 20; y++)
-                        {
-                            if (!CheckIfAlreadyExistant(new Point(x, y)))
-                            {
-                                MapConfig.Add(new Point(x, y));
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-                    for (int x = 0; x < 10; x++)
-                    {
-                        for (int y = 0; y < 10; y++)
-                        {
-                            if (x == 4 || x == 5)
-                            {
-                                if (!CheckIfAlreadyExistant(new Point(x, y)))
-                                {
-                                    MapConfig.Add(new Point(x, y));
-                                }
-                            }
-                            if (y == 4 || y == 5)
-                            {
-                                if (!CheckIfAlreadyExistant(new Point(x, y)))
-                                {
-                                    MapConfig.Add(new Point(x, y));
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 4:
-                    for (int x = 0; x < 9; x++)
-                    {
-                        for (int y = 0; y < 9; y++)
-                        {
-                            if (x > 5)
-                            {
-                                if (!CheckIfAlreadyExistant(new Point(x, y)))
-                                {
-                                    MapConfig.Add(new Point(x, y));
-                                }
-                            }
-                            else
-                            {
-                                if (y > 2 && x < 3)
-                                {
-                                    if (!CheckIfAlreadyExistant(new Point(x, y)))
-                                    {
-                                        MapConfig.Add(new Point(x, y));
-                                    }
-                                }
-                                if (x > 2 && x < 6 && (y < 3 || y > 5))
-                                {
-                                    if (!CheckIfAlreadyExistant(new Point(x, y)))
-                                    {
-                                        MapConfig.Add(new Point(x, y));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
+            MapConfig = _battlefieldconfig;
+        }
+        public BattleField()
+        {
 
-            }
+        }
+        public List<Point> mapconfig
+        {
+            get { return MapConfig; }
+            set { MapConfig = value; }
+        }
+        public string sName
+        {
+            get{ return sname;}
+            set{ sname = value;}
+        }
+        public override string ToString()
+        {
+            return sName;
         }
         public bool CheckIfAlreadyExistant(Point point)
         {
@@ -202,6 +127,28 @@ namespace DandDBattleSimulator.Classes
                 return true;
             }
             return false;
+        }
+        public Tuple<int,int> getDimensions()
+        {
+            
+
+            int width = 0;
+            int height = 0;
+            foreach (Point point in MapConfig)
+            {
+                if(width < point.X)
+                {
+                    width = point.X;
+                }
+                if (height < point.Y)
+                {
+                    height = point.Y;
+                }
+            }
+            width += 2;
+            height += 2;
+
+            return new Tuple<int, int>(width, height);
         }
 
 

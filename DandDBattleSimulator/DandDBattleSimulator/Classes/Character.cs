@@ -550,6 +550,36 @@ namespace DandDBattleSimulator.Classes
             return attribute;
         }
         #endregion
+        #region Saves
+        int willsave;
+        public int Willsave
+        {
+            get { return willsave; }
+            set { willsave = value; }
+        }
+        int fortitudesave;
+        public int Fortitudesave
+        {
+            get { return fortitudesave; }
+            set { fortitudesave = value; }
+        }
+        int reflexsave;
+        public int Reflexsave
+        {
+            get { return reflexsave; }
+            set { reflexsave = value; }
+        }
+        int deathsave;
+        public int Deathsave
+        {
+            get { return deathsave; }
+            set { deathsave = value; }
+        }
+        #endregion
+        #region Equipment
+        public List<Weapon> Weapons = new List<Weapon>();
+        public List<Armor> Armors = new List<Armor>();
+        #endregion
         #region Feats
         public List<CombatFeat> Feats = new List<CombatFeat>();
         #endregion
