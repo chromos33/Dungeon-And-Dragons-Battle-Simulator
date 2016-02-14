@@ -77,6 +77,10 @@ namespace DandDBattleSimulator
             Battlefield_Configs.ItemsSource = Battlefields;
             Character_Weapons.ItemsSource = tempWeaponList;
             Character_Armors.ItemsSource = tempArmorList;
+            Simulate_Part1_Allies.ItemsSource = Simulation_Ally_CharacterList;
+            Simulate_Part1_Enemies.ItemsSource = Simulation_Enemy_CharacterList;
+            Simulate_Part1_Characters.ItemsSource = Characters;
+            Character_CharacterList.ItemsSource = Characters;
         }
         private void LoadWeapons()
         {
@@ -264,8 +268,24 @@ namespace DandDBattleSimulator
             {
                 Weapons.Add(writeWeapon);
             }
+            Weapon_WeaponsList.Items.Refresh();
             string jsonwrite = JsonConvert.SerializeObject(writeWeapon);
             WriteJsonStringToFile(jsonwrite, "weapon", name);
+            //Check Characters that have this weapon to update data
+            foreach(Character character in Characters)
+            {
+                int weaponoccurance = character.Weapons.Where(x => x.name == writeWeapon.name).Count();
+                if (weaponoccurance > 0)
+                {
+                    character.Weapons.RemoveAll(x => x.name == writeWeapon.name);
+                    for(int i = 0; i<weaponoccurance;i++)
+                    {
+                        character.Weapons.Add(writeWeapon);
+                    }
+                }
+                jsonwrite = JsonConvert.SerializeObject(character);
+                WriteJsonStringToFile(jsonwrite, "character", character.Name);
+            }
         }
 
         #endregion
@@ -326,8 +346,24 @@ namespace DandDBattleSimulator
             {
                 Armors.Add(writeArmor);
             }
+            Armor_ArmorsList.Items.Refresh();
             string jsonwrite = JsonConvert.SerializeObject(writeArmor);
             WriteJsonStringToFile(jsonwrite, "armor", sName);
+
+            foreach (Character character in Characters)
+            {
+                int armoroccurance = character.Armors.Where(x => x.sName == writeArmor.sName).Count();
+                if (armoroccurance > 0)
+                {
+                    character.Armors.RemoveAll(x => x.sName == writeArmor.sName);
+                    for (int i = 0; i < armoroccurance; i++)
+                    {
+                        character.Armors.Add(writeArmor);
+                    }
+                }
+                jsonwrite = JsonConvert.SerializeObject(character);
+                WriteJsonStringToFile(jsonwrite, "character", character.Name);
+            }
         }
 
         private void Armor_ArmorsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -443,6 +479,7 @@ namespace DandDBattleSimulator
             BattleField newBattlefield = new BattleField(randomizer, CurrentBattlefieldbuild);
             newBattlefield.sName = BattleField_Name.Text;
             Battlefields.Add(newBattlefield);
+            Battlefield_Configs.Items.Refresh();
             string jsonwrite = JsonConvert.SerializeObject(newBattlefield);
             WriteJsonStringToFile(jsonwrite, "battlefield", newBattlefield.sName);
         }
@@ -572,13 +609,13 @@ namespace DandDBattleSimulator
                 return;
             }
             int Reflex_Save = 0;
-            if (!Int32.TryParse(Character_FortSave.Text, out Reflex_Save))
+            if (!Int32.TryParse(Character_ReflexSave.Text, out Reflex_Save))
             {
                 MessageBox.Show("You must enter a value for Reflex Save");
                 return;
             }
             int Death_Save = 0;
-            if (!Int32.TryParse(Character_FortSave.Text, out Death_Save))
+            if (!Int32.TryParse(Character_DeathSave.Text, out Death_Save))
             {
                 MessageBox.Show("You must enter a value for Death Save");
                 return;
@@ -603,6 +640,7 @@ namespace DandDBattleSimulator
             }
             
             Character.Name = name;
+            Character.Health = Health;
             Character.Strength = Strength;
             Character.Dexterity = Dexterity;
             Character.Constitution = Constitution;
@@ -620,6 +658,7 @@ namespace DandDBattleSimulator
             string jsonstring = JsonConvert.SerializeObject(Character);
             WriteJsonStringToFile(jsonstring, "character", Character.Name);
             Characters.Add(Character);
+            Character_CharacterList.Items.Refresh();
             #endregion
         }
 
@@ -632,32 +671,64 @@ namespace DandDBattleSimulator
                 weapon.is_primary = true;
             }
             tempWeaponList.Add(weapon);
+            Character_Weapons.ItemsSource = tempWeaponList;
+            InitComboBoxesSourceItems();
             Character_Weapons.Items.Refresh();
         }
         private void Character_Weapons_RemoveBtn_Click(object sender, RoutedEventArgs e)
         {
             int weapon = Character_Weapons.SelectedIndex;
-            tempWeaponList.RemoveAt(weapon);
-            Character_Weapons.Items.Refresh();
+            if(weapon != -1)
+            {
+                tempWeaponList.RemoveAt(weapon);
+                Character_Weapons.Items.Refresh();
+            }
+            
         }
         private void Character_Armors_AddBtn_Click(object sender, RoutedEventArgs e)
         {
             Armor armor = StaticJSONCloneHelper.Clone((Armor)Character_Armor_ComboBox.SelectedItem);
            
             tempArmorList.Add(armor);
+            Character_Armors.ItemsSource = tempArmorList;
             Character_Armors.Items.Refresh();
         }
         private void Character_Armors_RemoveBtn_Click(object sender, RoutedEventArgs e)
         {
             int armor = Character_Armors.SelectedIndex;
-            tempArmorList.RemoveAt(armor);
-            Character_Armors.Items.Refresh();
+            if(armor != -1)
+            {
+                tempArmorList.RemoveAt(armor);
+                Character_Armors.Items.Refresh();
+
+            }
+            
         }
         private void Character_CharacterList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //TODO: load Character Stats into UI
+            Character character = (Character)Character_CharacterList.SelectedItem;
+            Character_Name.Text = character.Name;
+            Character_HP.Text = character.Health.ToString();
+            Character_STR.Text = character.Strength.ToString();
+            Character_Dex.Text = character.Dexterity.ToString();
+            Character_Con.Text = character.Constitution.ToString();
+            Character_Int.Text = character.Intelligence.ToString();
+            Character_Cha.Text = character.Charisma.ToString();
+            Character_Wis.Text = character.Wisdom.ToString();
+            Character_WillSave.Text = character.Willsave.ToString();
+            Character_FortSave.Text = character.Fortitudesave.ToString();
+            Character_ReflexSave.Text = character.Reflexsave.ToString();
+            Character_DeathSave.Text = character.Deathsave.ToString();
+            Character_MoveMentrate.Text = character.MovementRate.ToString();
+            tempArmorList = character.Armors;
+            tempWeaponList = character.Weapons;
+            Character_Armors.ItemsSource = tempArmorList;
+            Character_Weapons.ItemsSource = tempWeaponList;
+            Character_Armors.Items.Refresh();
+            Character_Weapons.Items.Refresh();
+
         }
-        
+
         #endregion
 
         private Grid GenerateBattleGrid(Tuple<int,int>Dimensions)
@@ -682,5 +753,46 @@ namespace DandDBattleSimulator
             }
             return newGrid;
         }
+        #region Simulation
+        #region Simulation_Part1
+        List<Character> Simulation_Ally_CharacterList;
+        List<Character> Simulation_Enemy_CharacterList;
+        private void Simulate_Part1_Allies_Add_Click(object sender, RoutedEventArgs e)
+        {
+            if(Simulation_Ally_CharacterList == null)
+            {
+                Simulation_Ally_CharacterList = new List<Character>();
+            }
+            Character newcharacter = StaticJSONCloneHelper.Clone((Character)Simulate_Part1_Characters.SelectedItem);
+            Simulation_Ally_CharacterList.Add(newcharacter);
+            Simulate_Part1_Allies.ItemsSource = Simulation_Ally_CharacterList;
+            Simulate_Part1_Allies.Items.Refresh();
+        }
+
+        private void Simulate_Part1_Allies_Remove_Click(object sender, RoutedEventArgs e)
+        {
+            Simulation_Ally_CharacterList.RemoveAt(Simulate_Part1_Allies.SelectedIndex);
+            Simulate_Part1_Allies.Items.Refresh();
+        }
+
+        private void Simulate_Part1_Enemies_Add_Click(object sender, RoutedEventArgs e)
+        {
+            if (Simulation_Enemy_CharacterList == null)
+            {
+                Simulation_Enemy_CharacterList = new List<Character>();
+            }
+            Character newcharacter = StaticJSONCloneHelper.Clone((Character)Simulate_Part1_Characters.SelectedItem);
+            Simulation_Enemy_CharacterList.Add(newcharacter);
+            Simulate_Part1_Enemies.ItemsSource = Simulation_Enemy_CharacterList;
+            Simulate_Part1_Enemies.Items.Refresh();
+        }
+
+        private void Simulate_Part1_Enemies_Remove_Click(object sender, RoutedEventArgs e)
+        {
+            Simulation_Enemy_CharacterList.RemoveAt(Simulate_Part1_Enemies.SelectedIndex);
+            Simulate_Part1_Enemies.Items.Refresh();
+        }
+        #endregion
+        #endregion
     }
 }

@@ -21,7 +21,10 @@ namespace DandDBattleSimulator.Classes
         {
            
         }
-        
+        public override string ToString()
+        {
+            return Name;
+        }
         public void setBattlefield(BattleField _battlefield)
         {
             battlefield = _battlefield;
@@ -484,6 +487,12 @@ namespace DandDBattleSimulator.Classes
         }
         #endregion
         #region Attributes
+        int health;
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
         int strength;
         public int Strength
         {
@@ -578,6 +587,9 @@ namespace DandDBattleSimulator.Classes
         #endregion
         #region Equipment
         public List<Weapon> Weapons = new List<Weapon>();
+        //TODO: Dual Wielding
+        public Weapon MainHand;
+        public Weapon OffHand;
         public List<Armor> Armors = new List<Armor>();
         #endregion
         #region Feats
