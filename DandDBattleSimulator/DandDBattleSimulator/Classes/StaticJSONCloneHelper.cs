@@ -27,5 +27,11 @@ namespace DandDBattleSimulator.Classes
             Character clone = JsonConvert.DeserializeObject<Character>(jsonwrite);
             return clone;
         }
+        public static BattleField Clone(BattleField clonesource)
+        {
+            string jsonwrite = JsonConvert.SerializeObject(clonesource);
+            BattleField clone = JsonConvert.DeserializeObject<BattleField>(jsonwrite);
+            return clone;
+        }
     }
 }

@@ -17,6 +17,10 @@ namespace DandDBattleSimulator.Classes
         {
             return new Tuple<Point, Point>(position, direction);
         }
+        public string shortcut(int index = 0)
+        {
+            return Name.Substring(0,3)+index;
+        }
         public Character()
         {
            

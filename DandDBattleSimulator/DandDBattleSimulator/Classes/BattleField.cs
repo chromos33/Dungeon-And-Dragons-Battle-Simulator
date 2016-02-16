@@ -12,9 +12,14 @@ namespace DandDBattleSimulator.Classes
         List<Point> MapConfig;
         Random randomenerator;
         string sname;
-        public BattleField(Random randomizer,List<Point> _battlefieldconfig, int configurement = 0)
+        public void RemoveCharacter(int index)
         {
-            // 0 = simple room 10x10, 1 = 2 wide Pathway,2 = 1 wide Pathway,3 = crossintersection
+            Characters.RemoveAt(index);
+            return;
+        }
+        public BattleField(Random randomizer,List<Point> _battlefieldconfig)
+        {
+            
             randomenerator = randomizer;
             Characters = new List<Character>();
             MapConfig = _battlefieldconfig;
@@ -44,6 +49,10 @@ namespace DandDBattleSimulator.Classes
         }
         public void addCharacter(Character character, int _x = -1, int _y = -1)
         {
+            if(Characters == null)
+            {
+                Characters = new List<Character>();
+            }
             if (_x == -1 && _y == -1)
             {
                 if (Characters.Count > 0)

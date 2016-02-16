@@ -32,6 +32,7 @@ namespace DandDBattleSimulator
         Random randomizer;
         List<Weapon> tempWeaponList;
         List<Armor> tempArmorList;
+        BattleField SimulationBattleField;
 
         public MainWindow()
         {
@@ -81,6 +82,12 @@ namespace DandDBattleSimulator
             Simulate_Part1_Enemies.ItemsSource = Simulation_Enemy_CharacterList;
             Simulate_Part1_Characters.ItemsSource = Characters;
             Character_CharacterList.ItemsSource = Characters;
+            Simulation_Part1_BattlefieldSelect.ItemsSource = Battlefields;
+            Simulation_Part1_BattlefieldSelect.Items.Refresh();
+            Simulate_Init_Part2_Enemies.ItemsSource = Simulation_Enemy_CharacterList;
+            Simulate_Init_Part2_Allies.ItemsSource = Simulation_Ally_CharacterList;
+            Simulate_Init_Part2_Enemies.Items.Refresh();
+            Simulate_Init_Part2_Allies.Items.Refresh();
         }
         private void LoadWeapons()
         {
@@ -764,6 +771,8 @@ namespace DandDBattleSimulator
                 Simulation_Ally_CharacterList = new List<Character>();
             }
             Character newcharacter = StaticJSONCloneHelper.Clone((Character)Simulate_Part1_Characters.SelectedItem);
+            int charactercount = Simulation_Ally_CharacterList.Where(x => x.Name.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) == newcharacter.Name).Count();
+            newcharacter.Name = newcharacter.Name + charactercount;
             Simulation_Ally_CharacterList.Add(newcharacter);
             Simulate_Part1_Allies.ItemsSource = Simulation_Ally_CharacterList;
             Simulate_Part1_Allies.Items.Refresh();
@@ -782,6 +791,8 @@ namespace DandDBattleSimulator
                 Simulation_Enemy_CharacterList = new List<Character>();
             }
             Character newcharacter = StaticJSONCloneHelper.Clone((Character)Simulate_Part1_Characters.SelectedItem);
+            int charactercount = Simulation_Enemy_CharacterList.Where(x => x.Name.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) == newcharacter.Name).Count();
+            newcharacter.Name = newcharacter.Name + charactercount;
             Simulation_Enemy_CharacterList.Add(newcharacter);
             Simulate_Part1_Enemies.ItemsSource = Simulation_Enemy_CharacterList;
             Simulate_Part1_Enemies.Items.Refresh();
@@ -793,6 +804,121 @@ namespace DandDBattleSimulator
             Simulate_Part1_Enemies.Items.Refresh();
         }
         #endregion
+
         #endregion
+
+        private void Simulation_Part1_Next_Click(object sender, RoutedEventArgs e)
+        {
+            InitComboBoxesSourceItems();
+            Simulate_Init_Part1.Visibility = Visibility.Collapsed;
+            Simulate_Init_Part2.Visibility = Visibility.Visible;
+            BattleField newBattleField = (BattleField)Simulation_Part1_BattlefieldSelect.SelectedItem;
+            SimulationBattleField = new BattleField(randomizer,newBattleField.mapconfig);
+            Grid BattlefieldGrid = GenerateBattleGrid(newBattleField.getDimensions());
+            int height = newBattleField.getDimensions().Item2;
+            int width = newBattleField.getDimensions().Item1;
+            BattleField_Name.Text = newBattleField.sName;
+            Battlefield_Container.Children.Clear();
+            BattlefieldGrid.Name = "Battlefield_Simulation_Rendered";
+            BattlefieldGrid.Width = Double.NaN;
+            BattlefieldGrid.Height = Double.NaN;
+            BattlefieldGrid.HorizontalAlignment = HorizontalAlignment.Left;
+            BattlefieldGrid.VerticalAlignment = VerticalAlignment.Top;
+            BattlefieldGrid.ShowGridLines = true;
+            BattlefieldGrid.Background = new SolidColorBrush(Colors.LightSteelBlue);
+            for (int w = 0; w < height; w++)
+            {
+                BattlefieldGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+            for (int h = 0; h < width; h++)
+            {
+                BattlefieldGrid.RowDefinitions.Add(new RowDefinition());
+            }
+            for (int w = 0; w < height; w++)
+            {
+                for (int h = 0; h < width; h++)
+                {
+                    if(newBattleField.mapconfig.Where(x=> x.Y == h && x.X == w).Count() > 0)
+                    {
+                        Button button = new Button();
+                        button.Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                        button.MinHeight = 50;
+                        button.MinWidth = 50;
+                        button.Name = "Field_" + w + "_" + h;
+                        button.Click += new RoutedEventHandler(Simulation_Part2_Place_Character);
+                        button.Content = "";
+                        Grid.SetColumn(button, w);
+                        Grid.SetRow(button, h);
+                        BattlefieldGrid.Children.Add(button);
+                    }
+                }
+            }
+
+            Grid.SetColumn(BattlefieldGrid, 0);
+            Grid.SetRow(BattlefieldGrid, 2);
+            Simulate_Init_BattleMapGrid.Children.Add(BattlefieldGrid);
+
+            CurrentBattleFieldGrid = BattlefieldGrid;
+
+
+            CurrentBattlefieldbuild = new List<DandDBattleSimulator.Classes.Point>();
+        }
+
+        private void Simulation_Part2_Place_Character(object sender, RoutedEventArgs e)
+        {
+            if(Simulate_Init_Part2_Allies.SelectedIndex != -1 && Simulate_Init_Part2_Enemies.SelectedIndex != -1)
+            {
+                MessageBox.Show("Error: Only select either an ally or an enemy");
+                Simulate_Init_Part2_Allies.SelectedIndex = -1;
+                Simulate_Init_Part2_Enemies.SelectedIndex = -1;
+                return;
+            }
+            Character newcharacter = null;
+            if (Simulate_Init_Part2_Allies.SelectedIndex != -1)
+            {
+                newcharacter = (Character)Simulate_Init_Part2_Allies.SelectedItem;
+            }
+            if (Simulate_Init_Part2_Enemies.SelectedIndex != -1)
+            {
+                newcharacter = (Character)Simulate_Init_Part2_Enemies.SelectedItem;
+            }
+            Button button = (Button)sender;
+            if (Simulate_Init_Part2_Allies.SelectedIndex == -1 && Simulate_Init_Part2_Enemies.SelectedIndex == -1)
+            {
+                if(SimulationBattleField.getCharacters().Count()>0)
+                {
+                    button.Content = "";
+                    button.Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                    //myCars.Select((car, index) => new {car, index}).First(myCondition).index;
+                    SimulationBattleField.RemoveCharacter(SimulationBattleField.getCharacters().FindIndex(x => x.Name == newcharacter.Name));
+                }
+            }
+            else
+            {
+                //new point or replace
+                if(SimulationBattleField.getCharacters() != null)
+                {
+                    if (SimulationBattleField.getCharacters().Where(x => x.Name == newcharacter.Name).Count() > 0)
+                    {
+                        //Character already exists remove and then add
+                        SimulationBattleField.RemoveCharacter(SimulationBattleField.getCharacters().FindIndex(x => x.Name == newcharacter.Name));
+                    }
+                }
+                button.Content = newcharacter.shortcut();
+                button.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                MessageBox.Show(Grid.GetColumn(button)+"/"+ Grid.GetRow(button));
+                SimulationBattleField.addCharacter(newcharacter, Grid.GetColumn(button) - 1, Grid.GetRow(button) - 1);
+
+
+            }
+            Simulate_Init_Part2_Allies.SelectedIndex = -1;
+            Simulate_Init_Part2_Enemies.SelectedIndex = -1;
+        }
+
+        private void Simulate_Init_Part2_Back_Click(object sender, RoutedEventArgs e)
+        {
+            Simulate_Init_Part2.Visibility = Visibility.Collapsed;
+            Simulate_Init_Part1.Visibility = Visibility.Visible;
+        }
     }
 }
