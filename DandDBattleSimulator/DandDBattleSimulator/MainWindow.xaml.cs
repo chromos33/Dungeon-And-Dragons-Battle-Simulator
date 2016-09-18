@@ -89,6 +89,24 @@ namespace DandDBattleSimulator
             Simulate_Init_Part2_Enemies.Items.Refresh();
             Simulate_Init_Part2_Allies.Items.Refresh();
         }
+        private void UpdateUIElementsItems()
+        {
+            Weapon_WeaponsList.Items.Refresh();
+            Character_Weapon_ComboBox.Items.Refresh();
+            Armor_ArmorsList.Items.Refresh();
+            Character_Armor_ComboBox.Items.Refresh();
+            Battlefield_Configs.Items.Refresh();
+            Character_Weapons.Items.Refresh();
+            Character_Armors.Items.Refresh();
+            Simulate_Part1_Allies.Items.Refresh();
+            Simulate_Part1_Enemies.Items.Refresh();
+            Simulate_Part1_Characters.Items.Refresh();
+            Character_CharacterList.Items.Refresh();
+            Simulation_Part1_BattlefieldSelect.Items.Refresh();
+            Simulate_Init_Part2_Enemies.Items.Refresh();
+            Simulate_Init_Part2_Allies.Items.Refresh();
+            Simulation_Part1_BattlefieldSelect.Items.Refresh();
+        }
         private void LoadWeapons()
         {
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/weapon"))
@@ -104,6 +122,7 @@ namespace DandDBattleSimulator
                     {
                         Weapon insertweapon = JsonConvert.DeserializeObject<Weapon>(weaponjsonstring);
                         Weapons.Add(insertweapon);
+                        UpdateUIElementsItems();
                     }
                     catch (Exception)
                     {
@@ -151,6 +170,7 @@ namespace DandDBattleSimulator
                     {
                         BattleField insertBattlefield = JsonConvert.DeserializeObject<BattleField>(jsonstring);
                         Battlefields.Add(insertBattlefield);
+                        UpdateUIElementsItems();
                     } catch (Exception)
                     {
                         MessageBox.Show(file + " was corrupted or is not a valid file");
@@ -173,6 +193,7 @@ namespace DandDBattleSimulator
                     {
                         Character insertCharacter = JsonConvert.DeserializeObject<Character>(jsonstring);
                         Characters.Add(insertCharacter);
+                        UpdateUIElementsItems();
                     }
                     catch (Exception)
                     {
@@ -288,6 +309,7 @@ namespace DandDBattleSimulator
                     for(int i = 0; i<weaponoccurance;i++)
                     {
                         character.Weapons.Add(writeWeapon);
+                        UpdateUIElementsItems();
                     }
                 }
                 jsonwrite = JsonConvert.SerializeObject(character);
@@ -366,6 +388,7 @@ namespace DandDBattleSimulator
                     for (int i = 0; i < armoroccurance; i++)
                     {
                         character.Armors.Add(writeArmor);
+                        UpdateUIElementsItems();
                     }
                 }
                 jsonwrite = JsonConvert.SerializeObject(character);
@@ -489,6 +512,7 @@ namespace DandDBattleSimulator
             Battlefield_Configs.Items.Refresh();
             string jsonwrite = JsonConvert.SerializeObject(newBattlefield);
             WriteJsonStringToFile(jsonwrite, "battlefield", newBattlefield.sName);
+            UpdateUIElementsItems();
         }
 
         private void Battlefield_Configs_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -772,7 +796,7 @@ namespace DandDBattleSimulator
             }
             Character newcharacter = StaticJSONCloneHelper.Clone((Character)Simulate_Part1_Characters.SelectedItem);
             int charactercount = Simulation_Ally_CharacterList.Where(x => x.Name.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) == newcharacter.Name).Count();
-            newcharacter.Name = newcharacter.Name + charactercount;
+            newcharacter.Name = "A" + Simulate_Part1_Allies.Items.Count + newcharacter.Name;
             Simulation_Ally_CharacterList.Add(newcharacter);
             Simulate_Part1_Allies.ItemsSource = Simulation_Ally_CharacterList;
             Simulate_Part1_Allies.Items.Refresh();
@@ -792,7 +816,7 @@ namespace DandDBattleSimulator
             }
             Character newcharacter = StaticJSONCloneHelper.Clone((Character)Simulate_Part1_Characters.SelectedItem);
             int charactercount = Simulation_Enemy_CharacterList.Where(x => x.Name.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }) == newcharacter.Name).Count();
-            newcharacter.Name = newcharacter.Name + charactercount;
+            newcharacter.Name = "E" + Simulate_Part1_Enemies.Items.Count + newcharacter.Name;
             Simulation_Enemy_CharacterList.Add(newcharacter);
             Simulate_Part1_Enemies.ItemsSource = Simulation_Enemy_CharacterList;
             Simulate_Part1_Enemies.Items.Refresh();
@@ -863,7 +887,7 @@ namespace DandDBattleSimulator
 
             CurrentBattlefieldbuild = new List<DandDBattleSimulator.Classes.Point>();
         }
-
+        int placedcharacterindex = 1;
         private void Simulation_Part2_Place_Character(object sender, RoutedEventArgs e)
         {
             if(Simulate_Init_Part2_Allies.SelectedIndex != -1 && Simulate_Init_Part2_Enemies.SelectedIndex != -1)
@@ -904,9 +928,9 @@ namespace DandDBattleSimulator
                         SimulationBattleField.RemoveCharacter(SimulationBattleField.getCharacters().FindIndex(x => x.Name == newcharacter.Name));
                     }
                 }
-                button.Content = newcharacter.shortcut();
+                button.Content = newcharacter.shortcut(placedcharacterindex);
+                placedcharacterindex++;
                 button.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
-                MessageBox.Show(Grid.GetColumn(button)+"/"+ Grid.GetRow(button));
                 SimulationBattleField.addCharacter(newcharacter, Grid.GetColumn(button) - 1, Grid.GetRow(button) - 1);
 
 

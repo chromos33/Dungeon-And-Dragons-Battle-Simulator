@@ -1,0 +1,8 @@
+﻿<Application
+    x:Class="D_and_D_3_5_BattleSimulator_UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:D_and_D_3_5_BattleSimulator_UWP"
+    RequestedTheme="Light">
+
+</Application>

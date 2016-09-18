@@ -12,6 +12,7 @@ namespace DandDBattleSimulator.Classes
         Point direction;
         BattleField battlefield;
         int movrate = 30;
+        int iIndex = 0;
         public string Name;
         public Tuple<Point,Point> Direction()
         {
@@ -19,6 +20,7 @@ namespace DandDBattleSimulator.Classes
         }
         public string shortcut(int index = 0)
         {
+            iIndex = index;
             return Name.Substring(0,3)+index;
         }
         public Character()
@@ -27,7 +29,7 @@ namespace DandDBattleSimulator.Classes
         }
         public override string ToString()
         {
-            return Name;
+            return Name + iIndex;
         }
         public void setBattlefield(BattleField _battlefield)
         {

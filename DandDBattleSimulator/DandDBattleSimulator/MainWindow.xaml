@@ -8,55 +8,6 @@
         Title="MainWindow">
     <Grid Margin="0">
         <TabControl x:Name="tabControl" Margin="1,0,-1,0">
-            <TabItem Header="Simulate">
-                <Grid x:Name="Simulate_Grid_Main">
-                    <Grid x:Name="Simulate_Init_Part1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="6*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="6*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <Label x:Name="Simulate_Part1_Label_Ally" Content="Allies" Margin="0,10,0,5" HorizontalAlignment="Center" FontSize="12"/>
-                        <ListBox x:Name="Simulate_Part1_Allies" Margin="0" Grid.Row="1" Grid.RowSpan="3"/>
-                        <Button x:Name="Simulate_Part1_Allies_Remove" Grid.Row="5" Content="Remove" Margin="10" FontSize="12" Click="Simulate_Part1_Allies_Remove_Click"/>
-                        <Button x:Name="Simulate_Part1_Allies_Add" Grid.Column="1" Grid.Row="2" Content="f" FontFamily="Wingdings 3" Margin="5" Click="Simulate_Part1_Allies_Add_Click"/>
-
-                        <Label x:Name="Simulate_Part1_Label_Enemy" Grid.Column="5" Content="Enemies" Margin="0,10,0,5" FontSize="12" HorizontalAlignment="Center"/>
-                        <ListBox x:Name="Simulate_Part1_Enemies" Grid.Column="5" Margin="0" Grid.Row="1" Grid.RowSpan="3"/>
-                        <Button x:Name="Simulate_Part1_Enemies_Remove" Grid.Column="5" Grid.Row="5" Content="Remove" Margin="10" FontSize="12" Click="Simulate_Part1_Enemies_Remove_Click"/>
-                        <Button x:Name="Simulate_Part1_Enemies_Add" Grid.Column="3" Grid.Row="2" Content="g" FontFamily="Wingdings 3" Margin="5" Click="Simulate_Part1_Enemies_Add_Click"/>
-                        <ComboBox x:Name="Simulate_Part1_Characters" Grid.Column="2" Grid.Row="2" Margin="10,5"/>
-                        <Button x:Name="Simulation_Part1_Next" Grid.Column="2" Grid.Row="4" Content="Next" FontSize="13.333" Click="Simulation_Part1_Next_Click"/>
-                        <Grid Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="190,65,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
-                        <ComboBox x:Name="Simulation_Part1_BattlefieldSelect" Grid.Column="1" Grid.Row="1" Margin="12,0,10,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-                    </Grid>
-                    <Grid x:Name="Simulate_Init_Part2" Margin="0,10,4,0" Visibility="Collapsed">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="4*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <ListBox x:Name="Simulate_Init_Part2_Allies" Margin="0,10"/>
-                        <ListBox x:Name="Simulate_Init_Part2_Enemies" Margin="0,10" Grid.Row="1"/>
-                        <Button x:Name="Simulate_Init_Part2_Back" Content="Back" Grid.Row="2" Click="Simulate_Init_Part2_Back_Click"/>
-                        <Grid x:Name="Simulate_Init_BattleMapGrid" Grid.Column="1" Margin="0" Grid.RowSpan="2"/>
-                        
-                    </Grid>
-                </Grid>
-            </TabItem>
             <TabItem Header="Battlefield">
                 <Grid x:Name="Battlefield_Tab_Grid" Background="#FFE5E5E5">
                     <Grid Margin="0">
@@ -401,19 +352,94 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Feats" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="0">
+            <TabItem Header="Feats" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="0" IsEnabled="False">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="Abilities" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="0">
+            <TabItem Header="Abilities" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="0" IsEnabled="False">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="Rules" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="52,0,-52,0">
+            <TabItem Header="Rules" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="52,0,-52,0" IsEnabled="False">
                 <Grid Background="#FFE5E5E5" Margin="0,10,0,-10"/>
             </TabItem>
-            <TabItem Header="Settings" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="-55,0,0,0">
+            <TabItem Header="Settings" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Margin="-55,0,0,0" IsEnabled="False">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-           
+            <TabItem Header="Simulate" Height="22" VerticalAlignment="Bottom" Margin="0,0,-4,0">
+                <Grid x:Name="Simulate_Grid_Main">
+                    <Grid x:Name="Simulate_Init_Part1" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="6*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label x:Name="Simulate_Part1_Label_Ally" Content="Allies" Margin="0,10,0,5" HorizontalAlignment="Center" FontSize="12"/>
+                        <ListBox x:Name="Simulate_Part1_Allies" Margin="0" Grid.Row="1" Grid.RowSpan="3"/>
+                        <Button x:Name="Simulate_Part1_Allies_Remove" Grid.Row="5" Content="Remove" Margin="10" FontSize="12" Click="Simulate_Part1_Allies_Remove_Click"/>
+                        <Button x:Name="Simulate_Part1_Allies_Add" Grid.Column="1" Grid.Row="2" Content="f" FontFamily="Wingdings 3" Margin="5" Click="Simulate_Part1_Allies_Add_Click"/>
+
+                        <Label x:Name="Simulate_Part1_Label_Enemy" Grid.Column="5" Content="Enemies" Margin="0,10,0,5" FontSize="12" HorizontalAlignment="Center"/>
+                        <ListBox x:Name="Simulate_Part1_Enemies" Grid.Column="5" Margin="0" Grid.Row="1" Grid.RowSpan="3"/>
+                        <Button x:Name="Simulate_Part1_Enemies_Remove" Grid.Column="5" Grid.Row="5" Content="Remove" Margin="10" FontSize="12" Click="Simulate_Part1_Enemies_Remove_Click"/>
+                        <Button x:Name="Simulate_Part1_Enemies_Add" Grid.Column="3" Grid.Row="2" Content="g" FontFamily="Wingdings 3" Margin="5" Click="Simulate_Part1_Enemies_Add_Click"/>
+                        <ComboBox x:Name="Simulate_Part1_Characters" Grid.Column="2" Grid.Row="2" Margin="10,5"/>
+                        <Button x:Name="Simulation_Part1_Next" Grid.Column="2" Grid.Row="4" Content="Next" FontSize="13.333" Click="Simulation_Part1_Next_Click"/>
+                        <Grid Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="190,65,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
+                        <ComboBox x:Name="Simulation_Part1_BattlefieldSelect" Grid.Column="1" Grid.Row="1" Margin="12,0,10,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    </Grid>
+                    <Grid x:Name="Simulate_Init_Part2" Margin="0,10,4,0" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75*"/>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="75*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <ListBox x:Name="Simulate_Init_Part2_Allies" Margin="0,10"/>
+                        <ListBox x:Name="Simulate_Init_Part2_Enemies" Margin="0,10" Grid.Row="1"/>
+                        <Button x:Name="Simulate_Init_Part2_Back" Content="Back" Grid.Row="2" Click="Simulate_Init_Part2_Back_Click"/>
+                        <Grid x:Name="Simulate_Init_BattleMapGrid" Grid.Column="1" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+                        <Button x:Name="Simulate_Init_Part3_Forward" Content="Next" Grid.Column="2" Margin="0,0,0,0" Grid.Row="2"/>
+
+                    </Grid>
+                    <Grid x:Name="Simulate_Init_Part3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button x:Name="Simulation_Start" Content="Start Run" Margin="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBox x:Name="Simulation_RunCount" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox" Height="22"/>
+                        <Label x:Name="label" Content="Runs" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button x:Name="Simulation_Back" Content="Prev" HorizontalAlignment="Left" Margin="36,44,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75"/>
+                        <Label x:Name="label1" Content="Current Run" Grid.Column="1" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="Simulation_Current_Run" Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="0" VerticalAlignment="Center"/>
+                        <Label x:Name="label2" Content="Total Party Kill Chance" Grid.Column="3" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
 
 
 
