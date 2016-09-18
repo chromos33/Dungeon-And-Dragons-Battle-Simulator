@@ -7,7 +7,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,-500,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" x:Name="NavigationPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="Weapons" Grid.Row="0"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Weapons_Click">Weapons</Button>
+            <Button x:Name="Armors" Grid.Row="1"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Armors_Click">Armors</Button>
+            <Button x:Name="Feats" Grid.Row="2"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Feats_Click">Feats</Button>
+            <Button x:Name="Abilities" Grid.Row="3"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Abilities_Click">Abilities</Button>
+            <Button x:Name="Characters" Grid.Row="4"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Characters_Click">Characters</Button>
+            <Button x:Name="Battlefields" Grid.Row="5"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Battlefields_Click">Battlefield</Button>
+            <Button x:Name="Settings" Grid.Row="6"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Settings_Click">Settings</Button>
+            <Button x:Name="Simulate" Grid.Row="7"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Simulate_Click">Simulate</Button>
+        </Grid>
 
     </Grid>
 </Page>

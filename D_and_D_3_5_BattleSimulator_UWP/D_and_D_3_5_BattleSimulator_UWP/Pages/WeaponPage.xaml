@@ -1,0 +1,103 @@
+﻿<Page
+    x:Class="D_and_D_3_5_BattleSimulator_UWP.Pages.WeaponPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dataclasses="using:D_and_D_3_5_BattleSimulator_UWP.DataClasses"
+    xmlns:local="using:D_and_D_3_5_BattleSimulator_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    >
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,-691,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" x:Name="NavigationPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Button IsEnabled="False" x:Name="Weapons" Grid.Row="0"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Weapons_Click">Weapons</Button>
+            <Button x:Name="Armors" Grid.Row="1"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Armors_Click">Armors</Button>
+            <Button x:Name="Feats" Grid.Row="2"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Feats_Click">Feats</Button>
+            <Button x:Name="Abilities" Grid.Row="3"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Abilities_Click">Abilities</Button>
+            <Button x:Name="Characters" Grid.Row="4"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Characters_Click">Characters</Button>
+            <Button x:Name="Battlefields" Grid.Row="5"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Battlefields_Click">Battlefield</Button>
+            <Button x:Name="Settings" Grid.Row="6"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Settings_Click">Settings</Button>
+            <Button x:Name="Simulate" Grid.Row="7"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Simulate_Click">Simulate</Button>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="1" Margin="20,10,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Name"/>
+                <TextBlock Grid.Column="1" Text="Die"/>
+                <TextBlock Grid.Column="2" Text="Dice"/>
+                <TextBlock Grid.Column="3" Text="Bonusdamage"/>
+                <TextBlock Grid.Column="4" Text="Type"/>
+                <TextBlock Grid.Column="5" Text="Range"/>
+            </Grid>
+            <ListView x:Name="WeaponsList"  Grid.Row="1" Grid.Column="1" IsTapEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                <DataTemplate x:DataType="dataclasses:Weapons">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" x:Name="Name" PlaceholderText="Name" Text="{x:Bind name,Mode=TwoWay}"/>
+                            <TextBox Grid.Column="1" x:Name="Die" TextChanged="Numeric_TextChanged" PlaceholderText="Die" Text="{x:Bind Die,Mode=TwoWay}"/>
+                            <TextBox Grid.Column="2" x:Name="Dice" TextChanged="Numeric_TextChanged" PlaceholderText="Dice" Text="{x:Bind Dice,Mode=TwoWay}"/>
+                            <TextBox Grid.Column="3" x:Name="BonusDmg" TextChanged="Numeric_TextChanged" PlaceholderText="BonusDmg" Text="{x:Bind Bonusdamage,Mode=TwoWay}"/>
+                            <ComboBox Grid.Column="4" PlaceholderText="Type" x:Name="Type"/>
+                            <TextBox Grid.Column="5" x:Name="Range" PlaceholderText="Range"/>
+                            <Button Grid.Column="6"  x:Name="RemoveWeapon" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="+" Click="RemoveWeapon_Click" Width="30" Height="30"></Button>
+                        </Grid>
+                </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="AddWeapon" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="+" Grid.Column="0" Click="AddWeapon_Click"></Button>
+            </Grid>
+            
+        </Grid>
+
+    </Grid>
+</Page>
