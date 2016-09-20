@@ -90,13 +90,32 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
 
         private void RemoveWeapon_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("test");
+            try
+            {
+                int ID = Int32.Parse(((Button)sender).Tag.ToString());
+                WeaponItems.RemoveAt(ID);
+                if(WeaponItems.Count() > 1)
+                {
+                    foreach (Weapons weapon in WeaponItems)
+                    {
+                        if (weapon.ID > ID)
+                        {
+                            weapon.ID--;
+                        }
+                    }
+                }
+            }catch(FormatException)
+            {
+
+            }
+            
         }
 
         private void AddWeapon_Click(object sender, RoutedEventArgs e)
         {
-            Weapons newWeapon = new Weapons("", 0, 0, 0);
+            Weapons newWeapon = new Weapons("", 0, 0, 0, WeaponItems.Count(),"");
             WeaponItems.Add(newWeapon);
         }
+        
     }
 }
