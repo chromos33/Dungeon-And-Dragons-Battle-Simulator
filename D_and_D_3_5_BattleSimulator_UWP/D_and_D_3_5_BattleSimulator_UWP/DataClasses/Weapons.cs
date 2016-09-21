@@ -24,6 +24,10 @@
             UseChance = _useChance;
             ID = id;
         }
+        public Weapons()
+        {
+
+        }
         public override string ToString()
         {
             return name;

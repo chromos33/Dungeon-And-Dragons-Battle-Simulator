@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Navigation;
 using D_and_D_3_5_BattleSimulator_UWP.DataClasses;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,6 +33,38 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
         {
             this.InitializeComponent();
             WeaponsList.ItemsSource = WeaponItems;
+            InitFile();
+            
+        }
+        public async void InitFile()
+        {
+            if (!(await FileExists("Weapons.json")))
+            {
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                System.Diagnostics.Debug.WriteLine(storageFolder.Path);
+                Windows.Storage.StorageFile Weapons = await storageFolder.CreateFileAsync("Weapons.json");
+            }
+            Windows.Storage.StorageFolder storageFolder2 = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile WeaponsFile = null;
+            WeaponsFile = await storageFolder2.GetFileAsync("Weapons.json");
+
+            string weapons = await Windows.Storage.FileIO.ReadTextAsync(WeaponsFile);
+            foreach(Weapons weapon in JsonConvert.DeserializeObject<ObservableCollection<Weapons>>(weapons))
+            {
+                WeaponItems.Add(weapon);
+            }
+        }
+        public static async Task<bool> FileExists(string _filename)
+        {
+            try
+            {
+                var file = await ApplicationData.Current.LocalFolder.GetFileAsync(_filename);
+                return true;
+            }
+            catch (FileNotFoundException ex)
+            {
+                return false;
+            }
         }
         public override string ToString()
         {
@@ -116,6 +151,14 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
             Weapons newWeapon = new Weapons("", 0, 0, 0, WeaponItems.Count(),"");
             WeaponItems.Add(newWeapon);
         }
-        
+
+        private async void SaveWeapons_Click(object sender, RoutedEventArgs e)
+        {
+            string json = JsonConvert.SerializeObject(WeaponItems);
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile WeaponsFile = await storageFolder.GetFileAsync("Weapons.json");
+            await Windows.Storage.FileIO.WriteTextAsync(WeaponsFile, json);
+
+        }
     }
 }
