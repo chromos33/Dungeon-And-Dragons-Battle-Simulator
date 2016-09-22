@@ -38,7 +38,7 @@ namespace D_and_D_3_5_BattleSimulator_UWP
 
         private void Armors_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(ArmorPage));
         }
 
         private void Feats_Click(object sender, RoutedEventArgs e)

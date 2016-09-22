@@ -26,35 +26,74 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class WeaponPage : Page
+    public sealed partial class ArmorPage : Page
     {
-        ObservableCollection<Weapons> WeaponItems = new ObservableCollection<DataClasses.Weapons>();
-        public WeaponPage()
+        ObservableCollection<Armors> ArmorItems = new ObservableCollection<DataClasses.Armors>();
+        public ArmorPage()
         {
+
             this.InitializeComponent();
-            WeaponsList.ItemsSource = WeaponItems;
+            ArmorsList.ItemsSource = ArmorItems;
             InitFile();
-            
         }
+
+        private async void SaveArmors_Click(object sender, RoutedEventArgs e)
+        {
+            string json = JsonConvert.SerializeObject(ArmorItems);
+            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile ArmorsFile = await storageFolder.GetFileAsync("Armors.json");
+            await Windows.Storage.FileIO.WriteTextAsync(ArmorsFile, json);
+        }
+
+        private void AddArmor_Click(object sender, RoutedEventArgs e)
+        {
+            Armors newArmor = new Armors(0,0,"");
+            ArmorItems.Add(newArmor);
+        }
+
+        private void RemoveArmor_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int ID = Int32.Parse(((Button)sender).Tag.ToString());
+                ArmorItems.RemoveAt(ID);
+                if (ArmorItems.Count() > 1)
+                {
+                    foreach (Armors armor in ArmorItems)
+                    {
+                        if (armor.ID > ID)
+                        {
+                            armor.ID--;
+                        }
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+
+            }
+        }
+        
         public async void InitFile()
         {
-            if (!(await FileExists("Weapons.json")))
+            if (!(await FileExists("Armors.json")))
             {
                 Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
                 System.Diagnostics.Debug.WriteLine(storageFolder.Path);
-                Windows.Storage.StorageFile Weapons = await storageFolder.CreateFileAsync("Weapons.json");
+                Windows.Storage.StorageFile Armors = await storageFolder.CreateFileAsync("Armors.json");
             }
+            System.Diagnostics.Debug.WriteLine(Windows.Storage.ApplicationData.Current.LocalFolder.Path);
             Windows.Storage.StorageFolder storageFolder2 = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile WeaponsFile = null;
-            WeaponsFile = await storageFolder2.GetFileAsync("Weapons.json");
+            Windows.Storage.StorageFile ArmorsFile = null;
+            ArmorsFile = await storageFolder2.GetFileAsync("Armors.json");
 
-            string weapons = await Windows.Storage.FileIO.ReadTextAsync(WeaponsFile);
-            ObservableCollection<Weapons> temp = JsonConvert.DeserializeObject<ObservableCollection<Weapons>>(weapons);
-            if (temp != null && temp.Count() > 0)
+            string armors = await Windows.Storage.FileIO.ReadTextAsync(ArmorsFile);
+            ObservableCollection<Armors> temp = JsonConvert.DeserializeObject<ObservableCollection<Armors>>(armors);
+            if(temp != null && temp.Count() > 0)
             {
-                foreach (Weapons weapon in temp)
+                foreach (Armors armor in temp)
                 {
-                    WeaponItems.Add(weapon);
+                    ArmorItems.Add(armor);
                 }
             }
         }
@@ -72,7 +111,7 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
         }
         public override string ToString()
         {
-            return "Weapons";
+            return "Armors";
         }
         private void Weapons_Click(object sender, RoutedEventArgs e)
         {
@@ -116,7 +155,7 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
 
         private void Numeric_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(((TextBox)sender).Text != "")
+            if (((TextBox)sender).Text != "")
             {
                 ((TextBox)sender).Text = Regex.Replace(((TextBox)sender).Text, "[^0-9.]", "");
             }
@@ -124,44 +163,6 @@ namespace D_and_D_3_5_BattleSimulator_UWP.Pages
             {
                 ((TextBox)sender).Text = "0";
             }
-            
-        }
-
-        private void RemoveWeapon_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                int ID = Int32.Parse(((Button)sender).Tag.ToString());
-                WeaponItems.RemoveAt(ID);
-                if(WeaponItems.Count() > 1)
-                {
-                    foreach (Weapons weapon in WeaponItems)
-                    {
-                        if (weapon.ID > ID)
-                        {
-                            weapon.ID--;
-                        }
-                    }
-                }
-            }catch(FormatException)
-            {
-
-            }
-            
-        }
-
-        private void AddWeapon_Click(object sender, RoutedEventArgs e)
-        {
-            Weapons newWeapon = new Weapons("", 0, 0, 0, WeaponItems.Count(),"");
-            WeaponItems.Add(newWeapon);
-        }
-
-        private async void SaveWeapons_Click(object sender, RoutedEventArgs e)
-        {
-            string json = JsonConvert.SerializeObject(WeaponItems);
-            Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile WeaponsFile = await storageFolder.GetFileAsync("Weapons.json");
-            await Windows.Storage.FileIO.WriteTextAsync(WeaponsFile, json);
 
         }
     }

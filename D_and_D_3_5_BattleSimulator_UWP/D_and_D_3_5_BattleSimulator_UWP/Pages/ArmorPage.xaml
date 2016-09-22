@@ -1,14 +1,14 @@
 ﻿<Page
+    x:Class="D_and_D_3_5_BattleSimulator_UWP.Pages.ArmorPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:D_and_D_3_5_BattleSimulator_UWP.Pages"
     xmlns:dataclasses="using:D_and_D_3_5_BattleSimulator_UWP.DataClasses"
-    xmlns:local="using:D_and_D_3_5_BattleSimulator_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:System="using:System"
-    x:Class="D_and_D_3_5_BattleSimulator_UWP.Pages.WeaponPage"
-    mc:Ignorable="d"
-    >
+    mc:Ignorable="d">
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -25,8 +25,8 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button IsEnabled="False" x:Name="Weapons" Grid.Row="0"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Weapons_Click" Content="Weapons"/>
-            <Button x:Name="Armors" Grid.Row="1"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Armors_Click" Content="Armors"/>
+            <Button x:Name="Weapons" Grid.Row="0"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Weapons_Click" Content="Weapons"/>
+            <Button IsEnabled="False" x:Name="Armors" Grid.Row="1"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Armors_Click" Content="Armors"/>
             <Button x:Name="Feats" Grid.Row="2"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Feats_Click" Content="Feats"/>
             <Button x:Name="Abilities" Grid.Row="3"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Abilities_Click" Content="Abilities"/>
             <Button x:Name="Characters" Grid.Row="4"  Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Characters_Click" Content="Characters"/>
@@ -46,50 +46,34 @@
             <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Name"/>
-                <TextBlock Grid.Column="1" Text="Die"/>
-                <TextBlock Grid.Column="2" Text="Dice"/>
-                <TextBlock Grid.Column="3" Text="Bonusdamage"/>
-                <TextBlock Grid.Column="4" Text="Type"/>
-                <TextBlock Grid.Column="5" Text="Range"/>
+                <TextBlock Grid.Column="1" Text="Movement Restriction"/>
+                <TextBlock Grid.Column="2" Text="Armor Class"/>
             </Grid>
             <ScrollViewer Grid.Column="0" Grid.Row="1">
-                <ItemsControl x:Name="WeaponsList">
+                <ItemsControl x:Name="ArmorsList">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="dataclasses:Weapons">
+                        <DataTemplate x:DataType="dataclasses:Armors">
                             <Grid Margin="0,10,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" x:Name="Name" PlaceholderText="Name" Text="{x:Bind name, Mode=TwoWay}" Margin="0,0,5,0"/>
-                                <TextBox Grid.Column="1" x:Name="Die" TextChanged="Numeric_TextChanged" PlaceholderText="Die" Text="{x:Bind Die, Mode=TwoWay}" Margin="0,0,5,0"/>
-                                <TextBox Grid.Column="2" x:Name="Dice" TextChanged="Numeric_TextChanged" PlaceholderText="Dice" Text="{x:Bind Dice, Mode=TwoWay}" Margin="0,0,5,0"/>
-                                <TextBox Grid.Column="3" x:Name="BonusDmg" TextChanged="Numeric_TextChanged" PlaceholderText="BonusDmg" Text="{x:Bind Bonusdamage, Mode=TwoWay}" Margin="0,0,5,0"/>
-                                <ComboBox Grid.Column="4" SelectedValue="{x:Bind Type, Mode=TwoWay}" PlaceholderText="Type"  x:Name="Type" Margin="0,0,5,0">
-                                    <ComboBoxItem>Ranged</ComboBoxItem>
-                                    <ComboBoxItem>One Handed</ComboBoxItem>
-                                    <ComboBoxItem>Two Handed</ComboBoxItem>
-                                </ComboBox>
-                                <TextBox Grid.Column="5" x:Name="Range" PlaceholderText="Range" Margin="0,0,5,0"/>
-                                <Button Grid.Column="6" Tag="{x:Bind ID}"  x:Name="RemoveWeapon" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="-" Click="RemoveWeapon_Click" Width="30" Height="30" Margin="0,0,5,0"/>
+                                <TextBox Grid.Column="0" x:Name="Name" PlaceholderText="Name" Text="{x:Bind sname, Mode=TwoWay}" Margin="0,0,5,0"/>
+                                <TextBox Grid.Column="1" x:Name="Movement" TextChanged="Numeric_TextChanged" PlaceholderText="MovementMalus" Text="{x:Bind imovementrestriction, Mode=TwoWay}" Margin="0,0,5,0"/>
+                                <TextBox Grid.Column="2" x:Name="AC" TextChanged="Numeric_TextChanged" PlaceholderText="ArmorClass" Text="{x:Bind iArmorClass, Mode=TwoWay}" Margin="0,0,5,0"/>
+                                <Button Grid.Column="4" Tag="{x:Bind ID}"  x:Name="RemoveArmor" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="-" Click="RemoveArmor_Click" Width="30" Height="30" Margin="0,0,5,0"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -100,8 +84,8 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="AddWeapon" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="+" Grid.Column="0" Click="AddWeapon_Click"/>
-                <Button x:Name="SaveWeapons" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="Save" Grid.Column="1" Click="SaveWeapons_Click"/>
+                <Button x:Name="AddArmor" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="+" Grid.Column="0" Click="AddArmor_Click"/>
+                <Button x:Name="SaveArmors" Background="#FF0098D9" BorderBrush="#FF0098D9" Foreground="White" FontWeight="SemiBold" Content="Save" Grid.Column="1" Click="SaveArmors_Click"/>
             </Grid>
 
         </Grid>
